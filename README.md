@@ -1,8 +1,9 @@
 <div align="center">
 
-# 🔐 FOOTPRINTING AND SCANNING
+# 🔐 FOOTPRINTING & RECONNAISSANCE
 
-**Building an isolated virtual lab for penetration testing and ethical hacking practice**
+**Carryout footprint and reconnaissance on networkwalks.com using six built-in Kali Linux tools:
+whois, whatweb, nslookup, curl, wafw00f, dnsrecon and nmap for scanning**
 </div>
 
 <p align="center">
@@ -24,11 +25,13 @@
 
 ## 📌 Project Overview
 
-This project focuses on setting up a **virtual cybersecurity and penetration-testing laboratory** using VirtualBox and Kali Linux.
+This lab project applied core reconnaissance techniques from the penetration testing lifecycle across two environments: an external domain and an internal network.
 
-The purpose of the lab is to create a controlled environment where cybersecurity tools, network scanning, reconnaissance, vulnerability assessment, and other security-testing activities can be performed safely and repeatedly.
+In the first phase, footprinting was performed against networkwalks.com using six Kali Linux tools: WHOIS, WhatWeb, Nslookup, Curl, Wafw00f, and DNSRecon. This revealed domain registration details, the site's technology stack (WordPress 7.1.1 with the WP Download Manager plugin), its hosting IP, HTTP header configuration, an active ModSecurity WAF, and its full DNS record set (mail servers, SPF policy, and name server software).
 
-The lab is configured on a private virtual network so that additional machines can be added later and used as targets for authorized security testing.
+In the second phase, active scanning was carried out on a local LAN using Zenmap, the graphical front end for Nmap. This identified five live hosts on the subnet and produced a visual network topology map showing how devices connect to the scanning host.
+
+Together, the two phases demonstrate the natural progression of reconnaissance: starting with passive, publicly available information gathering about an external target, then moving to active internal host discovery. The exercise reinforced how even routine, non-intrusive queries can expose meaningful technical detail, and why documenting findings with clear evidence and risk context is a core skill in cybersecurity assessment work.
 
 ---
 
@@ -37,15 +40,12 @@ The lab is configured on a private virtual network so that additional machines c
 
 The main objectives of this project are to:
 
-- Install and configure VirtualBox.
-- Install/import Kali Linux as a virtual machine.
-- Create a private **NAT Network** for the cybersecurity lab.
-- Configure network connectivity for Kali Linux.
-- Assign a consistent IP address to the Kali VM.
-- Verify network connectivity and DNS resolution.
-- Take a clean VM snapshot for recovery.
-- Document the complete setup process.
-- Prepare the environment for future cybersecurity projects.
+- Run whois to find the domain registration details.
+- Run whatweb to fingerprint the web technologies.
+- Run nslookup to resolve the domain to its IP address.
+- Run curl -I to read the HTTP response headers.
+- Run wafw00f to detect a Web Application Firewall.
+- Run dnsrecon to enumerate all DNS records.
 
 ---
 
@@ -217,75 +217,38 @@ DNS:
 
 ---
 
-# 🐞 Problems Encountered & Solutions
-
-Documenting problems is an important part of the project.
-
-## Problem 1. Internet Connectivity After Static IP Configuration
-
-After manually configuring the IPv4 settings, Internet connectivity may fail depending on the Kali/NetworkManager configuration.
-
-One workaround used during this lab was:
-
-```bash
-sudo nmcli connection modify "Wired connection 1" ipv4.dad-timeout 0
-```
-
-The network connection was then restarted/rebooted and connectivity was tested again.
-
-> **Important:** Network interface and connection names may differ between systems. Students should first identify their actual connection name before running an `nmcli` command.
 
 ---
 
-## Problem 2. VirtualBox VT-x / Virtualization Error
-
-The VM initially failed to start because hardware virtualization was disabled in the system firmware/BIOS.
-
-The issue was resolved by:
-
-1. Restarting the computer.
-2. Entering BIOS/UEFI settings.
-3. Enabling Intel VT-x / hardware virtualization.
-4. Saving the configuration.
-5. Restarting the computer.
-6. Starting the Kali VM again.
-
-After enabling virtualization, the VM started successfully.
 
 
 ---
 
 # 💡 What I Learned
 
-Through this project, I learned how to create and configure a virtual environment for cybersecurity practice.
+Through this project, I learned how to carryout footprinting and reconnaissance.
 
 The most important concepts I learned include:
 
-### 1. NAT vs NAT Network
+### 1. OSINT and domain footprinting
 
-A standard NAT configuration and a NAT Network serve different purposes.
+Using WHOIS, WhatWeb, Nslookup, Curl, and DNSRecon to build a technical profile of a target domain from publicly available information alone.
 
-A NAT Network allows multiple VMs connected to the same virtual network to communicate with one another while providing network address translation for external connectivity.
+### 2. Web technology and infrastructure fingerprinting
 
-This makes it useful for building a multi-machine cybersecurity laboratory.
+Identifying a site's CMS, plugins, server software, and hosting setup, and understanding why version disclosure matters to an attacker.
 
-### 2. Virtual Machine Networking
+### 3. Network host discovery and mapping
 
-I learned how VirtualBox virtual network adapters connect virtual machines to different types of networks and how network configuration affects communication between machines.
+Using Zenmap/Nmap to scan a subnet, identify live hosts, and generate a visual network topology.
 
-### 3. Static IP Configuration
+### 4. Security risk analysis and reporting
 
-I learned how to configure and verify IPv4 addressing, subnet masks, gateways, and DNS settings in Kali Linux.
+Translating raw tool output into a structured risk table with findings, evidence, impact, and severity ratings, distinguishing observations from confirmed vulnerabilities.
 
-### 4. VM Snapshots
+### 5. Professional pentest documentation
 
-I learned that a clean snapshot should be created **before performing risky or experimental activities**.
-
-This provides a known-good recovery point for future cybersecurity exercises.
-
-### 5. Documentation
-
-I learned that documenting commands, configuration, screenshots, problems, and solutions is an important part of a professional cybersecurity project.
+ Writing a client-ready report with a liability disclaimer, scoped objectives, evidence screenshots, and actionable recommendations, following an industry-style reporting format.
 
 ---
 
@@ -297,8 +260,7 @@ This laboratory is intended strictly for education purposes only.
 
 # 🔗 Tools & Resources
 
-- **7-Zip:** [https://7-zip.org/download.html](https://7-zip.org/download.html)
-- **VirtualBox:** [https://virtualbox.org/wiki/Downloads](https://virtualbox.org/wiki/Downloads)
+- **nmap:** [https://nmap.org/download.html](https://nmap.org/download.html)
 - **Kali Linux:** [https://kali.org/get-kali](https://kali.org/get-kali)
 
 ---
